@@ -1,6 +1,7 @@
 import threading
 import time
 from typing import Any, List, Optional, Tuple
+from video_source import VideoSource        # replaces: from camera_source import CameraSource
 
 import cv2
 import mediapipe as mp
@@ -26,8 +27,8 @@ class FaceDetector:
     RIGHT_EYE: List[int] = [33, 160, 158, 133, 153, 144]
     LEFT_EYE: List[int] = [362, 385, 387, 263, 373, 380]
 
-    def __init__(self, source: CameraSource) -> None:
-        self.source: CameraSource = source
+    def __init__(self, source: VideoSource) -> None:   # was: source: CameraSource
+        self.source: VideoSource = source
         """Load the model and set up the thread state. Does not open the camera."""
         # Settings for the detector
         self.options: vision.FaceLandmarkerOptions = vision.FaceLandmarkerOptions(

@@ -2,12 +2,14 @@ from typing import List, Optional, Tuple
 
 import cv2
 import numpy as np
+import sys
 
 import BodyDetector
 import FaceDetector
 from body_features import BodySignals, BodyWindowFeatures
 from camera_source import CameraSource
 from features import WindowFeatures
+from video_source import VideoSource, open_source
 
 # --- Display settings ---
 VIEW_W: int = 640      # width of each video view in pixels
@@ -17,6 +19,9 @@ WHITE: Tuple[int, int, int] = (255, 255, 255)
 GREY: Tuple[int, int, int] = (190, 190, 190)
 GREEN: Tuple[int, int, int] = (0, 200, 0)
 RED: Tuple[int, int, int] = (0, 0, 255)
+# --- Display settings ---
+SOURCE: str = "videoplayback.mp4"      # "0" = first webcam, or a path such as "clips/syncope_01.mp4"
+VIEW_W: int = 640      # width of each video view in pixels
 
 Row = Tuple[str, str]  # (label, value text)
 
@@ -86,11 +91,12 @@ def body_rows(f: Optional[BodyWindowFeatures]) -> List[Row]:
 
 
 if __name__ == "__main__":
-    source: CameraSource = CameraSource(cam_index=0, width=1280, height=720, fps=30)
+    spec: str = sys.argv[1] if len(sys.argv) > 1 else SOURCE   # command line overrides the constant
+    source: VideoSource = open_source(spec, loop=False)
     face: FaceDetector.FaceDetector = FaceDetector.FaceDetector(source)
     body: BodyDetector.BodyDetector = BodyDetector.BodyDetector(source)
 
-    source.start()  # camera first, then the two detectors that read from it
+    source.start()  # source first, then the two detectors that read from it
     face.start()
     body.start()
     try:

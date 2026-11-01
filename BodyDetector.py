@@ -1,7 +1,7 @@
 import threading
 import time
 from typing import Optional, Tuple
-
+from video_source import VideoSource, open_source   # replaces: from camera_source import CameraSource
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -10,7 +10,6 @@ from mediapipe.tasks.python import vision
 
 from body_features import (BodySignals, BodyWindowFeatureExtractor, BodyWindowFeatures,
                            build_body_signals, Landmarks)
-from camera_source import CameraSource
 
 
 class BodyDetector:
@@ -22,8 +21,8 @@ class BodyDetector:
     # Landmarks drawn on screen: nose, shoulders, elbows, wrists, hips
     DRAW_IDX: Tuple[int, ...] = (0, 11, 12, 13, 14, 15, 16, 23, 24)
 
-    def __init__(self, source: CameraSource) -> None:
-        self.source: CameraSource = source
+    def __init__(self, source: VideoSource) -> None:   # was: source: CameraSource
+        self.source: VideoSource = source
         """Load the model and set up the thread state. Does not open the camera."""
 
         self.options: vision.PoseLandmarkerOptions = vision.PoseLandmarkerOptions(

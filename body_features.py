@@ -15,7 +15,7 @@ R_SHOULDER: int = 12
 L_WRIST: int = 15
 R_WRIST: int = 16
 
-MIN_VISIBILITY: float = 0.5    # below this, a landmark is treated as "not seen"
+MIN_VISIBILITY: float = 0.3    # below this, a landmark is treated as "not seen"
 
 
 # ======================= per-frame signals =======================
